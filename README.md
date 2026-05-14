@@ -114,7 +114,7 @@ datasource: 'firebase' // usa Firestore
 2. Cambia `enable_categories` a `true` y publica
 3. Recarga la app — aparece el botón de categorías y los filtros
 4. Cambia a `false` y publica — la funcionalidad desaparece sin recompilar
-[Demo en video](/demo.mp4)
+<video src="/demo.mp4" controls width="300"></video>
 ---
 
 ## Arquitectura
