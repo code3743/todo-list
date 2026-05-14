@@ -1,0 +1,13 @@
+ion-label.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 500;
+}

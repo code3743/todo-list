@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" (keydown.enter)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>New Task</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="submit()" (keydown.enter)="submit()" [disabled]="form.invalid" strong="true">Add</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-input
+        formControlName="title"
+        label="Task title"
+        labelPlacement="floating"
+        placeholder="What needs to be done?"
+        autocomplete="off"
+      ></ion-input>
+    </ion-item>
+
+    @if (showCategorySelector) {
+      <ion-item>
+        <ion-select
+          formControlName="categoryId"
+          label="Category"
+          labelPlacement="floating"
+          placeholder="None"
+        >
+          <ion-select-option [value]="null">None</ion-select-option>
+          @for (cat of categories; track cat.id) {
+            <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+    }
+  </form>
+</ion-content>
