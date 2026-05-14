@@ -1,20 +1,133 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>To-Do</ion-title>
+    @if (remoteConfig.enableCategories()) {
+      <ion-buttons slot="end">
+        <ion-button
+          (click)="openCategoriesModal()"
+          (keydown.enter)="openCategoriesModal()"
+          aria-label="Manage categories"
+        >
+          <ion-icon slot="icon-only" name="pricetags-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">To-Do</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  @if (remoteConfig.enableCategories() && categories.categories().length > 0) {
+    <div class="category-chips">
+      <ion-chip
+        [color]="selectedCategoryId() === null ? 'primary' : 'medium'"
+        (click)="selectedCategoryId.set(null)"
+        (keydown.enter)="selectedCategoryId.set(null)"
+      >All</ion-chip>
+      @for (cat of categories.categories(); track cat.id) {
+        <ion-chip
+          [color]="selectedCategoryId() === cat.id ? 'primary' : 'medium'"
+          (click)="selectedCategoryId.set(cat.id)"
+          (keydown.enter)="selectedCategoryId.set(cat.id)"
+        >
+          <span class="chip-dot" [style.background-color]="cat.color"></span>
+          {{ cat.name }}
+        </ion-chip>
+      }
+    </div>
+  }
+
+  <ion-list lines="full">
+    @for (task of filteredTasks(); track task.id) {
+      <app-task-item
+        [task]="task"
+        [category]="getCategory(task.categoryId)"
+        (toggled)="tasks.toggle($event)"
+        (deleted)="tasks.delete($event)"
+      ></app-task-item>
+    } @empty {
+      <app-empty-state
+        message="No tasks yet. Tap + to add one."
+        icon="checkmark-done-outline"
+      ></app-empty-state>
+    }
+  </ion-list>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openAddTask()" (keydown.enter)="openAddTask()" aria-label="Add task">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
+
+<!-- Categories management modal — always in DOM for @ViewChild -->
+<ion-modal #categoriesModal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Categories</ion-title>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="closeCategoriesModal()"
+            (keydown.enter)="closeCategoriesModal()"
+          >Done</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list lines="full">
+        @for (cat of categories.categories(); track cat.id) {
+          <ion-item-sliding>
+            <ion-item>
+              <span slot="start" class="cat-dot" [style.background-color]="cat.color"></span>
+              <ion-label>{{ cat.name }}</ion-label>
+              <ion-button
+                fill="clear"
+                slot="end"
+                (click)="openEditCategory(cat)"
+                (keydown.enter)="openEditCategory(cat)"
+                aria-label="Edit category"
+              >
+                <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option
+                color="danger"
+                (click)="deleteCategory(cat.id)"
+                (keydown.enter)="deleteCategory(cat.id)"
+              >
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        } @empty {
+          <app-empty-state
+            message="No categories yet"
+            icon="pricetags-outline"
+          ></app-empty-state>
+        }
+      </ion-list>
+    </ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-button
+          expand="block"
+          class="ion-margin"
+          (click)="openAddCategory()"
+          (keydown.enter)="openAddCategory()"
+        >
+          <ion-icon name="add" slot="start"></ion-icon>
+          Add Category
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

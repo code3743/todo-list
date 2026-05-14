@@ -12,7 +12,13 @@ export class Tasks {
   readonly tasks = this._tasks.asReadonly();
 
   constructor(private readonly datasource: TasksDataSource) {
-    this.datasource.getAll().then(tasks => this._tasks.set(tasks));
+    this.init();
+  }
+
+  private  init(): void{
+   this.datasource.getAll().then(
+      (t) => this._tasks.set(t)
+    )
   }
 
   async add(title: string, categoryId: string | null = null): Promise<void> {

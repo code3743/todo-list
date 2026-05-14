@@ -1,27 +1,30 @@
-#container {
-  text-align: center;
+.category-chips {
+  display: flex;
+  overflow-x: auto;
+  padding: 8px 12px;
+  gap: 6px;
+  scrollbar-width: none;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  ion-chip {
+    flex-shrink: 0;
+  }
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.chip-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.cat-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
 }
