@@ -3,6 +3,7 @@ import {
   Component,
   ViewChild,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -86,6 +87,9 @@ export class HomePage {
 
   constructor() {
     addIcons({ add, pricetagsOutline, pencilOutline, trashOutline });
+    effect(() => {
+      if (!this.remoteConfig.enableCategories()) this.selectedCategoryId.set(null);
+    });
   }
 
   getCategory(categoryId: string | null): Category | undefined {
