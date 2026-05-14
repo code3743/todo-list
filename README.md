@@ -114,7 +114,7 @@ datasource: 'firebase' // usa Firestore
 2. Cambia `enable_categories` a `true` y publica
 3. Recarga la app — aparece el botón de categorías y los filtros
 4. Cambia a `false` y publica — la funcionalidad desaparece sin recompilar
-
+[Demo en video](/demo.mp4)
 ---
 
 ## Arquitectura
@@ -147,8 +147,6 @@ El datasource activo se inyecta en `main.ts` según `environment.datasource`, si
 **Datasource intercambiable con Firebase y localStorage:** el reto principal fue diseñar una abstracción que soportara las operaciones síncronas del localStorage y las asíncronas de Firestore con la misma interfaz. Se resolvió con clases abstractas como tokens de inyección de Angular y métodos `Promise`-based en ambas implementaciones.
 
 **Sincronía entre signals y operaciones async:** Angular Signals son síncronos, pero las operaciones de Firebase no. Se adoptó el patrón de *optimistic update*: la señal se actualiza inmediatamente en memoria y la operación de persistencia ocurre en paralelo, logrando una UI sin latencia percibida.
-
-**Firebase Remote Config en WebView Android:** Remote Config funcionaba en iOS y en web pero no en el emulador Android de Cordova. La causa fue que Cordova usa el scheme `http` por defecto en Android, lo que provoca que algunas peticiones de Firebase sean rechazadas. Se resolvió cambiando el scheme a `https` en `config.xml`.
 
 ---
 
