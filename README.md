@@ -115,7 +115,10 @@ datasource: 'firebase' // usa Firestore
 3. Recarga la app — aparece el botón de categorías y los filtros
 4. Cambia a `false` y publica — la funcionalidad desaparece sin recompilar
 
-<video src="https://raw.githubusercontent.com/code3743/todo-list/refs/heads/main/demo.mp4" controls autoplay loop muted></video>
+![Demo](/output.gif)
+
+[Demo en video](/demo.mp4)
+
 ---
 
 ## Arquitectura
